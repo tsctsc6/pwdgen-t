@@ -1,7 +1,7 @@
 ﻿import {writable, get, type Writable} from "svelte/store";
 import type {MemoryRouter, RouteState} from "./types";
 
-function createMemoryRouter<T = unknown>(): MemoryRouter<T> {
+export function createMemoryRouter<T = unknown>(): MemoryRouter<T> {
     const initPath = "/init";
 
     const stack: Writable<RouteState<T>[]> = writable([
@@ -56,5 +56,4 @@ function createMemoryRouter<T = unknown>(): MemoryRouter<T> {
         clear
     };
 }
-
-export const router = createMemoryRouter();
+// Note: callers should create their own router instance via `createMemoryRouter()`

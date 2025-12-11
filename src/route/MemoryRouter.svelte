@@ -1,19 +1,33 @@
 ﻿<script lang="ts">
-    import {setContext, onMount} from "svelte";
-    import {router} from "./memory-router";
-    import type {MemoryRouter as MemoryRouterType} from "./types";
+  import { onMount, onDestroy } from "svelte";
+  import type { Component } from "svelte";
+  import type { MemoryRouter as MemoryRouterType } from "./types";
 
-    setContext<MemoryRouterType>("MEMORY_ROUTER", router);
+  export let routes: Record<string, Component> = {};
+  export let initial = "/init";
+  export let router: MemoryRouterType;
 
-    // Completely disable the browser / phone back button
-    onMount(() => {
-        const handler = (_e: PopStateEvent) => {
-        };
+  // Completely disable the browser / phone back button
+  onMount(() => {
+    const handler = (_e: PopStateEvent) => {};
 
-        window.addEventListener("popstate", handler);
+    window.addEventListener("popstate", handler);
 
-        return () => window.removeEventListener("popstate", handler);
-    });
+    // ensure initial route is set from prop (if router provided)
+    router?.replace(initial);
+
+    return () => window.removeEventListener("popstate", handler);
+  });
+
+  let component: Component | undefined;
+  const unsubscribe =
+    router?.current.subscribe((v) => {
+      component = routes[v.path];
+    }) ?? (() => {});
+
+  onDestroy(unsubscribe);
 </script>
 
-<slot/>
+{#if component}
+  <svelte:component this={component} />
+{/if}
