@@ -2,6 +2,7 @@ use crate::commands::init_migrate::init_migrate;
 
 mod commands;
 mod entities;
+mod factory;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
