@@ -1,3 +1,4 @@
+use crate::commands::create_acct_data::create_acct_data;
 use crate::commands::init_migrate::init_migrate;
 
 mod commands;
@@ -25,7 +26,7 @@ pub fn run() {
             }
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![init_migrate])
+        .invoke_handler(tauri::generate_handler![init_migrate, create_acct_data])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

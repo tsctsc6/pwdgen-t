@@ -1,7 +1,7 @@
 ﻿use serde::Serialize;
 use thiserror::Error;
 
-mod create_acct_data;
+pub mod create_acct_data;
 pub mod init_migrate;
 
 #[derive(Debug, Error)]
