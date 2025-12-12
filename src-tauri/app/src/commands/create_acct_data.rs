@@ -7,7 +7,7 @@ use sea_orm::{ActiveModelTrait, ActiveValue};
 #[tauri::command]
 pub async fn create_acct_data(app: tauri::AppHandle, item: Model) -> Result<(), CommandError> {
     let db = create_db_connection(&app).await?;
-    let new_acct_data = acct_data::ActiveModel {
+    let acct_data_to_create = acct_data::ActiveModel {
         user_name: ActiveValue::Set(item.user_name),
         platform: ActiveValue::Set(item.platform),
         remark: ActiveValue::Set(item.remark),
@@ -20,6 +20,6 @@ pub async fn create_acct_data(app: tauri::AppHandle, item: Model) -> Result<(), 
         updated_at: ActiveValue::Set(item.updated_at),
         ..Default::default()
     };
-    new_acct_data.insert(&db).await?;
+    acct_data_to_create.insert(&db).await?;
     Ok(())
 }

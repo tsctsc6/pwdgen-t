@@ -10,12 +10,12 @@ pub struct Model {
     pub user_name: String,
     pub platform: String,
     pub remark: String,
-    pub skip_count: i32,
+    pub skip_count: u32,
     pub use_up_letter: bool,
     pub use_low_letter: bool,
     pub use_number: bool,
     pub use_sp_char: bool,
-    pub pwd_len: i32,
+    pub pwd_len: u32,
     pub updated_at: String,
 }
 

@@ -1,7 +1,6 @@
 ﻿use crate::commands::CommandError;
 use crate::factory::create_db_connection;
 use migration::{Migrator, MigratorTrait};
-use sea_orm::DatabaseConnection;
 
 #[tauri::command]
 pub async fn init_migrate(app: tauri::AppHandle) -> Result<(), CommandError> {

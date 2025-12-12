@@ -2,7 +2,11 @@
 use thiserror::Error;
 
 pub mod create_acct_data;
+pub mod delete_acct_data;
 pub mod init_migrate;
+pub mod read_acct_data;
+pub mod read_all_acct_data;
+pub mod update_acct_data;
 
 #[derive(Debug, Error)]
 pub enum CommandError {

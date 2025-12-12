@@ -1,5 +1,9 @@
 use crate::commands::create_acct_data::create_acct_data;
+use crate::commands::delete_acct_data::delete_acct_data;
 use crate::commands::init_migrate::init_migrate;
+use crate::commands::read_acct_data::read_acct_data;
+use crate::commands::read_all_acct_data::read_all_acct_data;
+use crate::commands::update_acct_data::update_acct_data;
 
 mod commands;
 mod entities;
@@ -26,7 +30,14 @@ pub fn run() {
             }
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![init_migrate, create_acct_data])
+        .invoke_handler(tauri::generate_handler![
+            init_migrate,
+            create_acct_data,
+            update_acct_data,
+            delete_acct_data,
+            read_acct_data,
+            read_all_acct_data
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
