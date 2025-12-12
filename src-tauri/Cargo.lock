@@ -150,6 +150,7 @@ dependencies = [
  "tauri-build",
  "tauri-plugin-log",
  "tauri-plugin-single-instance",
+ "thiserror 2.0.17",
  "tokio",
 ]
 
