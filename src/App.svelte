@@ -9,20 +9,22 @@
   import "./app.css";
   import AddAcctData from "./pages/AddAcctData.svelte";
   import { BottomNav, BottomNavItem, Tooltip } from "flowbite-svelte";
+  
   import {
     HomeSolid,
     AdjustmentsVerticalOutline,
-    PlusOutline,
+    PlusOutline
   } from "flowbite-svelte-icons";
-
+  
   const routes = {
     "/init": Init,
     "/home": Home,
     "/settings": Settings,
-    "/add-acct-data": AddAcctData,
+    "/add-acct-data": AddAcctData
   } as Record<string, Component>;
-
+  
   const router = createMemoryRouter();
+  
   setContext<MemoryRouterType>("MEMORY_ROUTER", router);
 </script>
 
@@ -48,7 +50,6 @@
       btnName="Create new item"
       appBtnPosition="middle"
       class="plus-button bg-primary-600 hover:bg-primary-700 group focus:ring-primary-300 dark:focus:ring-primary-800 inline-flex h-10 w-10 items-center justify-center rounded-full font-medium focus:ring-4 focus:outline-hidden"
-      style="background-color: #EF562F;"
       onclick={() => router.clear("/add-acct-data")}
     >
       <PlusOutline class="text-white" />
