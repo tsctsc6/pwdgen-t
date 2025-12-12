@@ -1,23 +1,11 @@
-﻿use migration::{Migrator, MigratorTrait};
-use sea_orm::{Database, DatabaseConnection};
-use tauri::Manager;
-use tokio::fs;
+﻿use crate::commands::CommandError;
+use crate::factory::create_db_connection;
+use migration::{Migrator, MigratorTrait};
+use sea_orm::DatabaseConnection;
 
 #[tauri::command]
-pub async fn init_migrate(app: tauri::AppHandle) {
-    let app_data_path = app
-        .path()
-        .app_data_dir()
-        .unwrap()
-        .to_string_lossy()
-        .to_string();
-    // println!("{}", app_data_path);
-
-    fs::create_dir_all(&app_data_path).await.unwrap();
-
-    let db: DatabaseConnection =
-        Database::connect(format!("sqlite://{}/PwdGenT.db?mode=rwc", app_data_path))
-            .await
-            .unwrap();
-    Migrator::up(&db, None).await.unwrap();
+pub async fn init_migrate(app: tauri::AppHandle) -> Result<(), CommandError> {
+    let db = create_db_connection(&app).await?;
+    Migrator::up(&db, None).await?;
+    Ok(())
 }
