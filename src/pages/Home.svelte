@@ -2,32 +2,49 @@
     import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Button, PaginationNav,Search } from "flowbite-svelte";
     import { SearchSolid,ArrowLeftOutline,ArrowRightOutline } from "flowbite-svelte-icons";
     import {invoke} from "@tauri-apps/api/core";
+    import {onMount} from "svelte";
+    import type {page_content_type, read_all_acct_data_result} from "../models/read_all_acct_data_result";
 
     let searchTerm = $state("");
     let currentPage = $state(1);
     let pageSize = $state(10);
-    let totalPages = 3;
+    let totalPages = $state(3);
+    let pageContent : page_content_type[] | null = $state(null);
 
     const onSearch = async () => {
-        console.log(searchTerm);
         await getData();
     }
 
     const onPageChange = async (page: number) => {
         currentPage = page;
-        console.log(currentPage);
         await getData();
     }
 
     const getData = async () => {
+        pageContent = null;
         let pageIndex = currentPage - 1;
-        let x = await invoke("read_all_acct_data", {searchTerm, pageIndex, pageSize});
-        console.log(x);
+        let result : read_all_acct_data_result = await invoke("read_all_acct_data", {searchTerm, pageIndex, pageSize});
+        console.log(result);
+        if (result.page_count === 0)
+        {
+            totalPages = 1;
+        }
+        else
+        {
+            totalPages = result.page_count;
+        }
+        pageContent = result.page_content;
+        console.log(totalPages);
+        console.log(pageContent);
     }
 
     const onClickRow = (tableIndex: number) => {
         console.log(tableIndex);
     }
+
+    onMount(async () => {
+        await getData();
+    })
 </script>
 
 <div class="mb-6">
@@ -42,26 +59,27 @@
     </Search>
 </div>
 
-<Table>
-    <TableHead>
-        <TableHeadCell>User Name</TableHeadCell>
-        <TableHeadCell>Platform</TableHeadCell>
-    </TableHead>
-    <TableBody>
-        <TableBodyRow onclick={() =>{onClickRow(0)}}>
-            <TableBodyCell>Apple MacBook Pro 17</TableBodyCell>
-            <TableBodyCell>Silver</TableBodyCell>
-        </TableBodyRow>
-        <TableBodyRow>
-            <TableBodyCell>Microsoft Surface Pro</TableBodyCell>
-            <TableBodyCell>White</TableBodyCell>
-        </TableBodyRow>
-        <TableBodyRow>
-            <TableBodyCell>Magic Mouse 2</TableBodyCell>
-            <TableBodyCell>Black</TableBodyCell>
-        </TableBodyRow>
-    </TableBody>
-</Table>
+{#if pageContent === null}
+    <p>Loading...</p>
+{:else}
+    <Table>
+        <TableHead>
+            <TableHeadCell>Id</TableHeadCell>
+            <TableHeadCell>User Name</TableHeadCell>
+            <TableHeadCell>Platform</TableHeadCell>
+        </TableHead>
+        <TableBody>
+            {#each pageContent as item}
+                <TableBodyRow onclick={() =>{onClickRow(item.id)}}>
+                    <TableBodyCell>{item.id}</TableBodyCell>
+                    <TableBodyCell>{item.user_name}</TableBodyCell>
+                    <TableBodyCell>{item.platform}</TableBodyCell>
+                </TableBodyRow>
+
+            {/each}
+        </TableBody>
+    </Table>
+{/if}
 
 <PaginationNav {currentPage} {totalPages} {onPageChange}>
     {#snippet prevContent()}
