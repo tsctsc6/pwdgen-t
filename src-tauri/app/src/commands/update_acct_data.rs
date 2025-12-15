@@ -19,8 +19,27 @@ pub struct Request {
     pub pwd_len: u32,
 }
 
+pub fn validate(request: &Request) -> Result<(), CommandError> {
+    if request.user_name.is_empty() {
+        Err(UniversalError {
+            code: 0,
+            message: "user_name is empty".to_string(),
+        })?;
+    }
+
+    if request.platform.is_empty() {
+        Err(UniversalError {
+            code: 0,
+            message: "platform is empty".to_string(),
+        })?;
+    }
+
+    Ok(())
+}
+
 #[tauri::command]
 pub async fn update_acct_data(app: tauri::AppHandle, request: Request) -> Result<(), CommandError> {
+    validate(&request)?;
     let db = create_db_connection(&app).await?;
     let acct_data_to_update = acct_data::Entity::find_by_id(request.id).one(&db).await?;
     let acct_data_to_update = match acct_data_to_update {

@@ -1,4 +1,5 @@
 ﻿use crate::commands::CommandError;
+use crate::commands::UniversalError;
 use crate::entities::acct_data;
 use crate::factory::create_db_connection;
 use chrono::Utc;
@@ -18,8 +19,27 @@ pub struct Request {
     pub pwd_len: u32,
 }
 
+pub fn validate(request: &Request) -> Result<(), CommandError> {
+    if request.user_name.is_empty() {
+        Err(UniversalError {
+            code: 0,
+            message: "user_name is empty".to_string(),
+        })?;
+    }
+
+    if request.platform.is_empty() {
+        Err(UniversalError {
+            code: 0,
+            message: "platform is empty".to_string(),
+        })?;
+    }
+
+    Ok(())
+}
+
 #[tauri::command]
 pub async fn create_acct_data(app: tauri::AppHandle, request: Request) -> Result<(), CommandError> {
+    validate(&request)?;
     let db = create_db_connection(&app).await?;
     let acct_data_to_create = acct_data::ActiveModel {
         user_name: ActiveValue::Set(request.user_name),
