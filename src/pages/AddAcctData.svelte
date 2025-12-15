@@ -3,6 +3,10 @@
     import {FloppyDiskAltSolid, MinusOutline, PlusOutline, CheckOutline, ClipboardCleanSolid, PlaySolid}
         from "flowbite-svelte-icons";
     import {invoke} from "@tauri-apps/api/core";
+    import {getContext} from "svelte";
+    import {type MemoryRouter, SingletonKey} from "../route/types";
+
+    const router = getContext<MemoryRouter>(SingletonKey);
 
     let userName: string = $state("");
     let platform: string = $state("");
@@ -29,6 +33,7 @@
             pwd_len: passwordLength,
         };
         await invoke("create_acct_data", {request});
+        router.clear("/home");
     }
 
     const onGenerate = () => {

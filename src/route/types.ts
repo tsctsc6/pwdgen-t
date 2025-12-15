@@ -11,3 +11,5 @@ export interface MemoryRouter<T = unknown> {
     back: () => void;
     clear: (path: string) => void;
 }
+
+export const SingletonKey = "MEMORY_ROUTER";
