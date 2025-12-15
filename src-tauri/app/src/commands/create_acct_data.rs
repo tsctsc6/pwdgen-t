@@ -1,23 +1,39 @@
 ﻿use crate::commands::CommandError;
 use crate::entities::acct_data;
-use crate::entities::acct_data::Model;
 use crate::factory::create_db_connection;
+use chrono::Utc;
 use sea_orm::{ActiveModelTrait, ActiveValue};
+use serde::Deserialize;
+
+#[derive(Deserialize)]
+pub struct Request {
+    pub user_name: String,
+    pub platform: String,
+    pub remark: String,
+    pub skip_count: u32,
+    pub use_up_letter: bool,
+    pub use_low_letter: bool,
+    pub use_number: bool,
+    pub use_sp_char: bool,
+    pub pwd_len: u32,
+}
 
 #[tauri::command]
-pub async fn create_acct_data(app: tauri::AppHandle, item: Model) -> Result<(), CommandError> {
+pub async fn create_acct_data(app: tauri::AppHandle, request: Request) -> Result<(), CommandError> {
     let db = create_db_connection(&app).await?;
     let acct_data_to_create = acct_data::ActiveModel {
-        user_name: ActiveValue::Set(item.user_name),
-        platform: ActiveValue::Set(item.platform),
-        remark: ActiveValue::Set(item.remark),
-        skip_count: ActiveValue::Set(item.skip_count),
-        use_up_letter: ActiveValue::Set(item.use_up_letter),
-        use_low_letter: ActiveValue::Set(item.use_low_letter),
-        use_number: ActiveValue::Set(item.use_number),
-        use_sp_char: ActiveValue::Set(item.use_sp_char),
-        pwd_len: ActiveValue::Set(item.pwd_len),
-        updated_at: ActiveValue::Set(item.updated_at),
+        user_name: ActiveValue::Set(request.user_name),
+        platform: ActiveValue::Set(request.platform),
+        remark: ActiveValue::Set(request.remark),
+        skip_count: ActiveValue::Set(request.skip_count),
+        use_up_letter: ActiveValue::Set(request.use_up_letter),
+        use_low_letter: ActiveValue::Set(request.use_low_letter),
+        use_number: ActiveValue::Set(request.use_number),
+        use_sp_char: ActiveValue::Set(request.use_sp_char),
+        pwd_len: ActiveValue::Set(request.pwd_len),
+        updated_at: ActiveValue::Set(
+            Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Millis, false),
+        ),
         ..Default::default()
     };
     acct_data_to_create.insert(&db).await?;
