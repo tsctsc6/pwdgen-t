@@ -24,7 +24,6 @@
         pageContent = null;
         let pageIndex = currentPage - 1;
         let result : read_all_acct_data_result = await invoke("read_all_acct_data", {searchTerm, pageIndex, pageSize});
-        console.log(result);
         if (result.page_count === 0)
         {
             totalPages = 1;
@@ -34,8 +33,6 @@
             totalPages = result.page_count;
         }
         pageContent = result.page_content;
-        console.log(totalPages);
-        console.log(pageContent);
     }
 
     const onClickRow = (tableIndex: number) => {
