@@ -1,7 +1,7 @@
 ﻿import {writable, get, type Writable} from "svelte/store";
-import type {MemoryRouter, RouteState} from "./types";
+import type {IMemoryRouter, RouteState} from "./types";
 
-export function createMemoryRouter(): MemoryRouter {
+export function createMemoryRouter(): IMemoryRouter {
     const initPath = "/init";
 
     const stack: Writable<RouteState[]> = writable([

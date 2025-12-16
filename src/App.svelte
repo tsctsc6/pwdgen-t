@@ -3,7 +3,7 @@
     import {setContext, type Component} from "svelte";
     import {createMemoryRouter} from "./route/memory-router";
     import {
-        type MemoryRouter as MemoryRouterType,
+        type IMemoryRouter,
         SingletonKey,
     } from "./route/types";
     import Init from "./pages/Init.svelte";
@@ -32,7 +32,7 @@
 
     const router = createMemoryRouter();
 
-    setContext<MemoryRouterType>(SingletonKey, router);
+    setContext<IMemoryRouter>(SingletonKey, router);
 </script>
 
 <MemoryRouter {routes} {router} initial="/init"/>

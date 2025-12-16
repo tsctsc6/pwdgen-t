@@ -4,9 +4,9 @@
         from "flowbite-svelte-icons";
     import {invoke} from "@tauri-apps/api/core";
     import {getContext} from "svelte";
-    import {type MemoryRouter, SingletonKey} from "../route/types";
+    import {type IMemoryRouter, SingletonKey} from "../route/types";
 
-    const router = getContext<MemoryRouter>(SingletonKey);
+    const router = getContext<IMemoryRouter>(SingletonKey);
 
     let userName: string = $state("");
     let platform: string = $state("");

@@ -15,9 +15,9 @@
     import {invoke} from "@tauri-apps/api/core";
     import {getContext, onMount} from "svelte";
     import type {page_content_type, read_all_acct_data_result} from "../models/read_all_acct_data_result";
-    import {type MemoryRouter, SingletonKey} from "../route/types";
+    import {type IMemoryRouter, SingletonKey} from "../route/types";
 
-    const router = getContext<MemoryRouter>(SingletonKey);
+    const router = getContext<IMemoryRouter>(SingletonKey);
 
     let searchTerm = $state("");
     let currentPage = $state(1);
