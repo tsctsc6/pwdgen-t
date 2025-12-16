@@ -19,6 +19,7 @@
         PlusOutline,
     } from "flowbite-svelte-icons";
     import ReadAcctData from "./pages/ReadAcctData.svelte";
+    import EditAcctData from "./pages/EditAcctData.svelte";
 
     const routes = {
         "/init": Init,
@@ -26,6 +27,7 @@
         "/settings": Settings,
         "/add-acct-data": AddAcctData,
         "/read-acct-data": ReadAcctData,
+        "/edit-acct-data": EditAcctData,
     } as unknown as Record<string, Component>;
 
     const router = createMemoryRouter();
