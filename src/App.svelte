@@ -2,7 +2,10 @@
     import MemoryRouter from "./route/MemoryRouter.svelte";
     import {setContext, type Component} from "svelte";
     import {createMemoryRouter} from "./route/memory-router";
-    import {type MemoryRouter as MemoryRouterType, SingletonKey} from "./route/types";
+    import {
+        type MemoryRouter as MemoryRouterType,
+        SingletonKey,
+    } from "./route/types";
     import Init from "./pages/Init.svelte";
     import Home from "./pages/Home.svelte";
     import Settings from "./pages/Settings.svelte";
@@ -13,15 +16,17 @@
     import {
         HomeSolid,
         AdjustmentsVerticalOutline,
-        PlusOutline
+        PlusOutline,
     } from "flowbite-svelte-icons";
+    import ReadAcctData from "./pages/ReadAcctData.svelte";
 
     const routes = {
         "/init": Init,
         "/home": Home,
         "/settings": Settings,
-        "/add-acct-data": AddAcctData
-    } as Record<string, Component>;
+        "/add-acct-data": AddAcctData,
+        "/read-acct-data": ReadAcctData,
+    } as unknown as Record<string, Component>;
 
     const router = createMemoryRouter();
 

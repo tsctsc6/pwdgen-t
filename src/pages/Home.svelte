@@ -1,15 +1,28 @@
 ﻿<script lang="ts">
-    import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Button, PaginationNav,Search } from "flowbite-svelte";
-    import { SearchSolid,ArrowLeftOutline,ArrowRightOutline } from "flowbite-svelte-icons";
+    import {
+        Table,
+        TableBody,
+        TableBodyCell,
+        TableBodyRow,
+        TableHead,
+        TableHeadCell,
+        Button,
+        PaginationNav,
+        Search
+    } from "flowbite-svelte";
+    import {SearchSolid, ArrowLeftOutline, ArrowRightOutline} from "flowbite-svelte-icons";
     import {invoke} from "@tauri-apps/api/core";
-    import {onMount} from "svelte";
+    import {getContext, onMount} from "svelte";
     import type {page_content_type, read_all_acct_data_result} from "../models/read_all_acct_data_result";
+    import {type MemoryRouter, SingletonKey} from "../route/types";
+
+    const router = getContext<MemoryRouter>(SingletonKey);
 
     let searchTerm = $state("");
     let currentPage = $state(1);
     let pageSize = $state(10);
     let totalPages = $state(3);
-    let pageContent : page_content_type[] | null = $state(null);
+    let pageContent: page_content_type[] | null = $state(null);
 
     const onSearch = async () => {
         await getData();
@@ -23,20 +36,17 @@
     const getData = async () => {
         pageContent = null;
         let pageIndex = currentPage - 1;
-        let result : read_all_acct_data_result = await invoke("read_all_acct_data", {searchTerm, pageIndex, pageSize});
-        if (result.page_count === 0)
-        {
+        let result: read_all_acct_data_result = await invoke("read_all_acct_data", {searchTerm, pageIndex, pageSize});
+        if (result.page_count === 0) {
             totalPages = 1;
-        }
-        else
-        {
+        } else {
             totalPages = result.page_count;
         }
         pageContent = result.page_content;
     }
 
-    const onClickRow = (tableIndex: number) => {
-        console.log(tableIndex);
+    const onClickRow = (id: number) => {
+        router.push("/read-acct-data", {id: id});
     }
 
     onMount(async () => {
@@ -51,7 +61,7 @@
 <div class="mb-6">
     <Search id="search-input" bind:value={searchTerm}>
         <Button id="search-button" class="me-1" onclick={onSearch}>
-            <SearchSolid class="h-6 w-6" />
+            <SearchSolid class="h-6 w-6"/>
         </Button>
     </Search>
 </div>
@@ -81,10 +91,10 @@
 <PaginationNav {currentPage} {totalPages} {onPageChange}>
     {#snippet prevContent()}
         <span class="sr-only">Previous</span>
-        <ArrowLeftOutline class="h-5 w-5" />
+        <ArrowLeftOutline class="h-5 w-5"/>
     {/snippet}
     {#snippet nextContent()}
         <span class="sr-only">Next</span>
-        <ArrowRightOutline class="h-5 w-5" />
+        <ArrowRightOutline class="h-5 w-5"/>
     {/snippet}
 </PaginationNav>
