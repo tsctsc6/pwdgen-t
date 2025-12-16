@@ -26,6 +26,10 @@
     }
 
     const onEdit = () => {
+        if (acctData === null) {
+            return;
+        }
+        router.push("/edit-acct-data", {id: acctData.id});
     }
 
     const onGenerate = () => {
@@ -34,7 +38,7 @@
 </script>
 
 <div class="flex items-center mb-6 gap-3">
-    <Button id="submit" pill class="p-2!" onclick={onBack}>
+    <Button id="back-button" pill class="p-2!" onclick={onBack}>
         <CaretLeftSolid class="h-6 w-6"/>
     </Button>
 
@@ -42,7 +46,7 @@
         Details
     </h1>
 
-    <Button id="submit" pill class="p-2!" onclick={onEdit}>
+    <Button id="edit-button" pill class="p-2!" onclick={onEdit}>
         <EditSolid class="h-6 w-6"/>
     </Button>
 </div>
@@ -82,16 +86,16 @@
         </div>
     </div>
     <div class="mb-6">
-        <Toggle disabled checked={acctData.use_up_letter}>Use up letter</Toggle>
+        <Toggle disabled bind:checked={acctData.use_up_letter}>Use up letter</Toggle>
     </div>
     <div class="mb-6">
-        <Toggle disabled checked={acctData.use_low_letter}>Use low letter</Toggle>
+        <Toggle disabled bind:checked={acctData.use_low_letter}>Use low letter</Toggle>
     </div>
     <div class="mb-6">
-        <Toggle disabled checked={acctData.use_number}>Use number</Toggle>
+        <Toggle disabled bind:checked={acctData.use_number}>Use number</Toggle>
     </div>
     <div class="mb-6">
-        <Toggle disabled checked={acctData.use_sp_char}>Use special character</Toggle>
+        <Toggle disabled bind:checked={acctData.use_sp_char}>Use special character</Toggle>
     </div>
     <div class="flex items-center mb-6 gap-2">
         <Label for="password-length" class="mb-2 block">Password length</Label>

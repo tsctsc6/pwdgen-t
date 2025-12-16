@@ -79,16 +79,16 @@
     </div>
 </div>
 <div class="mb-6">
-    <Toggle checked={useUpLetter}>Use up letter</Toggle>
+    <Toggle bind:checked={useUpLetter}>Use up letter</Toggle>
 </div>
 <div class="mb-6">
-    <Toggle checked={useLowLetter}>Use low letter</Toggle>
+    <Toggle bind:checked={useLowLetter}>Use low letter</Toggle>
 </div>
 <div class="mb-6">
-    <Toggle checked={useNumber}>Use number</Toggle>
+    <Toggle bind:checked={useNumber}>Use number</Toggle>
 </div>
 <div class="mb-6">
-    <Toggle checked={useSpecialCharacter}>Use special character</Toggle>
+    <Toggle bind:checked={useSpecialCharacter}>Use special character</Toggle>
 </div>
 <div class="flex items-center mb-6 gap-2">
     <Label for="password-length" class="mb-2 block">Password length</Label>
