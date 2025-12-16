@@ -20,14 +20,17 @@
   });
 
   let component: Component | undefined;
+  let componentProps: Record<string, unknown> = {};
+
   const unsubscribe =
     router?.current.subscribe((v) => {
       component = routes[v.path];
+      componentProps = v.props ?? {};
     }) ?? (() => {});
 
   onDestroy(unsubscribe);
 </script>
 
 {#if component}
-  <svelte:component this={component} />
+  <svelte:component this={component} {...componentProps} />
 {/if}

@@ -1,16 +1,16 @@
 ﻿import {writable, get, type Writable} from "svelte/store";
 import type {MemoryRouter, RouteState} from "./types";
 
-export function createMemoryRouter<T = unknown>(): MemoryRouter<T> {
+export function createMemoryRouter(): MemoryRouter {
     const initPath = "/init";
 
-    const stack: Writable<RouteState<T>[]> = writable([
-        {path: initPath, state: undefined}
+    const stack: Writable<RouteState[]> = writable([
+        {path: initPath, props: undefined}
     ]);
 
-    const current: Writable<RouteState<T>> = writable({
+    const current: Writable<RouteState> = writable({
         path: initPath,
-        state: undefined
+        props: undefined
     });
 
     function sync() {
@@ -18,15 +18,15 @@ export function createMemoryRouter<T = unknown>(): MemoryRouter<T> {
         current.set(s[s.length - 1]);
     }
 
-    function push(path: string, state?: T) {
-        stack.update(s => [...s, {path, state}]);
+    function push(path: string, props?: Record<string, unknown>) {
+        stack.update(s => [...s, {path, props}]);
         sync();
     }
 
-    function replace(path: string, state?: T) {
+    function replace(path: string, props?: Record<string, unknown>) {
         stack.update(s => {
             const copy = [...s];
-            copy[copy.length - 1] = {path, state};
+            copy[copy.length - 1] = {path, props};
             return copy;
         });
         sync();
@@ -43,7 +43,7 @@ export function createMemoryRouter<T = unknown>(): MemoryRouter<T> {
     }
 
     function clear(path = "/") {
-        stack.set([{path, state: undefined}]);
+        stack.set([{path, props: undefined}]);
         sync();
     }
 

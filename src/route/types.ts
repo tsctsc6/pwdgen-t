@@ -1,13 +1,13 @@
-﻿export type RouteState<T = unknown> = {
+﻿export type RouteState = {
     path: string;
-    state?: T;
+    props?: Record<string, unknown>;
 };
 
-export interface MemoryRouter<T = unknown> {
-    stack: import("svelte/store").Writable<RouteState<T>[]>;
-    current: import("svelte/store").Writable<RouteState<T>>;
-    push: (path: string, state?: T) => void;
-    replace: (path: string, state?: T) => void;
+export interface MemoryRouter {
+    stack: import("svelte/store").Writable<RouteState[]>;
+    current: import("svelte/store").Writable<RouteState>;
+    push: (path: string, props?: Record<string, unknown>) => void;
+    replace: (path: string, props?: Record<string, unknown>) => void;
     back: () => void;
     clear: (path: string) => void;
 }
