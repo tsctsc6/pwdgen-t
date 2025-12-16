@@ -1,6 +1,7 @@
 ﻿<script lang="ts">
     import {invoke} from "@tauri-apps/api/core";
     import {getContext, onMount} from "svelte";
+    import {Spinner} from "flowbite-svelte";
     import {type MemoryRouter, SingletonKey} from "../route/types";
 
     const router = getContext<MemoryRouter>(SingletonKey);
@@ -17,4 +18,4 @@
     });
 </script>
 
-<p>Migrating...</p>
+<Spinner/>

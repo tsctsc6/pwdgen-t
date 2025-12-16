@@ -11,6 +11,7 @@
         Search
     } from "flowbite-svelte";
     import {SearchSolid, ArrowLeftOutline, ArrowRightOutline} from "flowbite-svelte-icons";
+    import {Spinner} from "flowbite-svelte";
     import {invoke} from "@tauri-apps/api/core";
     import {getContext, onMount} from "svelte";
     import type {page_content_type, read_all_acct_data_result} from "../models/read_all_acct_data_result";
@@ -67,7 +68,7 @@
 </div>
 
 {#if pageContent === null}
-    <p>Loading...</p>
+    <Spinner/>
 {:else}
     <Table>
         <TableHead>
