@@ -1,8 +1,8 @@
 ﻿use crate::commands::CommandError;
 use crate::keystream_provider::KeystreamProvider;
-use chacha20::cipher::generic_array::GenericArray;
-use chacha20::cipher::KeyIvInit;
 use chacha20::ChaCha20;
+use chacha20::cipher::KeyIvInit;
+use chacha20::cipher::generic_array::GenericArray;
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
 
@@ -108,7 +108,6 @@ pub async fn calculate_password(
                 Some(_) => {}
             };
         }
-        dbg!(&char_set);
         let char = loop {
             let key = keystream_provoder.get_next_key()?;
             break match uniformly_pick(char_set, key as usize) {
@@ -117,8 +116,6 @@ pub async fn calculate_password(
             };
         };
         string_builder.push(char);
-        let result: String = string_builder.iter().collect();
-        dbg!("{}", result);
     }
     Ok(string_builder.iter().collect())
 }
