@@ -34,6 +34,13 @@ pub fn validate(request: &Request) -> Result<(), CommandError> {
         })?;
     }
 
+    if request.pwd_len > 255 {
+        Err(UniversalError {
+            code: 0,
+            message: "pwd_len is too long".to_string(),
+        })?;
+    }
+
     Ok(())
 }
 

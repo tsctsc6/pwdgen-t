@@ -1,4 +1,4 @@
-﻿use crate::commands::CommandError;
+﻿use crate::commands::{CommandError, UniversalError};
 use crate::keystream_provider::KeystreamProvider;
 use chacha20::ChaCha20;
 use chacha20::cipher::KeyIvInit;
@@ -32,11 +32,44 @@ pub struct Request {
     pub main_password: String,
 }
 
+pub fn validate(request: &Request) -> Result<(), CommandError> {
+    if request.user_name.is_empty() {
+        Err(UniversalError {
+            code: 0,
+            message: "user_name is empty".to_string(),
+        })?;
+    }
+
+    if request.platform.is_empty() {
+        Err(UniversalError {
+            code: 0,
+            message: "platform is empty".to_string(),
+        })?;
+    }
+
+    if request.pwd_len > 255 {
+        Err(UniversalError {
+            code: 0,
+            message: "pwd_len is too long".to_string(),
+        })?;
+    }
+
+    if request.main_password.is_empty() {
+        Err(UniversalError {
+            code: 0,
+            message: "main_password is empty".to_string(),
+        })?;
+    }
+
+    Ok(())
+}
+
 #[tauri::command]
 pub async fn calculate_password(
-    app: tauri::AppHandle,
+    _: tauri::AppHandle,
     request: Request,
 ) -> Result<String, CommandError> {
+    validate(&request)?;
     let hash1 = Sha256::digest(
         [
             request.user_name.as_bytes(),
