@@ -65,9 +65,19 @@
         router.back();
     }
 
-    const onGenerate = () => {
-        console.log("onGenerate");
-        console.log(useUpLetter);
+    const onGenerate = async () => {
+        let request = {
+            user_name: userName,
+            platform: platform,
+            skip_count: skipCount,
+            use_up_letter: useUpLetter,
+            use_low_letter: useLowLetter,
+            use_number: useNumber,
+            use_sp_char: useSpecialCharacter,
+            pwd_len: passwordLength,
+            main_password: mainPassword,
+        };
+        passwordGenerated = await invoke("calculate_password", {request});
     }
 
     const onBack = () => {

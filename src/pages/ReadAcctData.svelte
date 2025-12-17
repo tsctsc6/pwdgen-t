@@ -32,8 +32,22 @@
         router.push("/edit-acct-data", {id: acctData.id});
     }
 
-    const onGenerate = () => {
-        console.log("onGenerate");
+    const onGenerate = async () => {
+        if (acctData === null) {
+            return;
+        }
+        let request = {
+            user_name: acctData.user_name,
+            platform: acctData.platform,
+            skip_count: acctData.skip_count,
+            use_up_letter: acctData.use_up_letter,
+            use_low_letter: acctData.use_low_letter,
+            use_number: acctData.use_number,
+            use_sp_char: acctData.use_sp_char,
+            pwd_len: acctData.pwd_len,
+            main_password: mainPassword,
+        };
+        passwordGenerated = await invoke("calculate_password", {request});
     }
 </script>
 
