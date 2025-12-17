@@ -63,6 +63,10 @@ pub async fn calculate_password(
 
     let mut string_builder: Vec<char> = vec![];
 
+    for _ in 0..request.skip_count {
+        let _ = keystream_provoder.get_next_key()?;
+    }
+
     for _ in 0..request.pwd_len {
         let char_set = loop {
             let key = keystream_provoder.get_next_key()?;
@@ -101,13 +105,6 @@ pub async fn calculate_password(
                 break char_set;
             }
         };
-        for mut current_skip_count in 0..request.skip_count {
-            let key = keystream_provoder.get_next_key()?;
-            match uniformly_pick(char_set, key as usize) {
-                None => current_skip_count = current_skip_count - 1,
-                Some(_) => {}
-            };
-        }
         let char = loop {
             let key = keystream_provoder.get_next_key()?;
             break match uniformly_pick(char_set, key as usize) {
