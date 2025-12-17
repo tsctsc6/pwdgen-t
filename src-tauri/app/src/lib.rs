@@ -1,3 +1,4 @@
+use crate::commands::calculate_password::calculate_password;
 use crate::commands::create_acct_data::create_acct_data;
 use crate::commands::delete_acct_data::delete_acct_data;
 use crate::commands::init_migrate::init_migrate;
@@ -8,6 +9,7 @@ use crate::commands::update_acct_data::update_acct_data;
 mod commands;
 mod entities;
 mod factory;
+mod keystream_provider;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -36,7 +38,8 @@ pub fn run() {
             update_acct_data,
             delete_acct_data,
             read_acct_data,
-            read_all_acct_data
+            read_all_acct_data,
+            calculate_password
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

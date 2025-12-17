@@ -28,3 +28,6 @@ sea-orm = { version = "2.0.0-rc", features = ["sqlx-sqlite", "runtime-tokio", "m
 migration = { path = "../migration" }
 thiserror = "2"
 chrono = "0"
+chacha20 = "0"
+sha2 = "0"
+cipher = "0"
