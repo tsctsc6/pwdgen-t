@@ -2,7 +2,7 @@
     import {Button, Label, Input, Toggle, ButtonGroup, Clipboard, Tooltip, Spinner} from "flowbite-svelte";
     import {
         MinusOutline, PlusOutline, CheckOutline, ClipboardCleanSolid, PlaySolid, FloppyDiskAltSolid,
-        CaretLeftSolid
+        CaretLeftSolid, TrashBinSolid
     }
         from "flowbite-svelte-icons";
     import {invoke} from "@tauri-apps/api/core";
@@ -82,6 +82,11 @@
 
     const onBack = () => {
         router.back();
+    }
+
+    const onDelete = async () => {
+        await invoke("delete_acct_data", {id});
+        router.clear("/home");
     }
 </script>
 
@@ -165,7 +170,11 @@
         <Input readonly disabled id="updated-at" bind:value={acctData.updated_at}/>
     </div>
 
-    <div class="flex items-center mb-6 gap-2"></div>
+    <div class="mb-6">
+        <Button id="delete-button" pill class="p-2!" onclick={onDelete}>
+            <TrashBinSolid class="h-6 w-6"/>
+        </Button>
+    </div>
 
     <div class="flex items-center mb-6 gap-2">
         <Input id="default-input" type="password" bind:value={mainPassword}/>
