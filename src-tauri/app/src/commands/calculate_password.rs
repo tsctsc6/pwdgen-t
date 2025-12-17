@@ -1,8 +1,8 @@
-﻿use crate::commands::{CommandError, UniversalError};
+﻿use crate::commands::CommandError;
 use crate::keystream_provider::KeystreamProvider;
-use chacha20::ChaCha20;
-use chacha20::cipher::KeyIvInit;
 use chacha20::cipher::generic_array::GenericArray;
+use chacha20::cipher::KeyIvInit;
+use chacha20::ChaCha20;
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
 
@@ -58,7 +58,7 @@ pub async fn calculate_password(
     // key is hash, nonce is hash first 96 bits.
     let mut keystream_provoder = KeystreamProvider::new(Box::new(ChaCha20::new(
         GenericArray::from_slice(&hash),
-        GenericArray::from_slice(&hash),
+        GenericArray::from_slice(&hash[0..12]),
     )));
 
     let mut string_builder: Vec<char> = vec![];
@@ -108,6 +108,7 @@ pub async fn calculate_password(
                 Some(_) => {}
             };
         }
+        dbg!(&char_set);
         let char = loop {
             let key = keystream_provoder.get_next_key()?;
             break match uniformly_pick(char_set, key as usize) {
@@ -116,16 +117,14 @@ pub async fn calculate_password(
             };
         };
         string_builder.push(char);
+        let result: String = string_builder.iter().collect();
+        dbg!("{}", result);
     }
-
     Ok(string_builder.iter().collect())
 }
 
 fn uniformly_pick(char_set: &[char], key: usize) -> Option<char> {
-    if char_set.len() <= key {
-        return None;
-    }
-    if key >= key / char_set.len() * char_set.len() {
+    if key >= ((256 / char_set.len()) * char_set.len()) {
         return None;
     }
     Some(char_set[key % char_set.len()])
