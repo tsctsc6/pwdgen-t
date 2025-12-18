@@ -22,21 +22,28 @@ pub struct Request {
 pub fn validate(request: &Request) -> Result<(), CommandError> {
     if request.user_name.is_empty() {
         Err(UniversalError {
-            code: 0,
+            code: 2,
             message: "user_name is empty".to_string(),
         })?;
     }
 
     if request.platform.is_empty() {
         Err(UniversalError {
-            code: 0,
+            code: 2,
             message: "platform is empty".to_string(),
+        })?;
+    }
+    
+    if request.nonce_offset >= 20 {
+        Err(UniversalError {
+            code: 2,
+            message: "nonce_offset is too big".to_string(),
         })?;
     }
 
     if request.pwd_len > 255 {
         Err(UniversalError {
-            code: 0,
+            code: 2,
             message: "pwd_len is too long".to_string(),
         })?;
     }
