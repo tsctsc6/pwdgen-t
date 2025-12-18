@@ -7,6 +7,7 @@ use crate::commands::read_acct_data::read_acct_data;
 use crate::commands::read_all_acct_data::read_all_acct_data;
 use crate::commands::restore::restore;
 use crate::commands::update_acct_data::update_acct_data;
+use tauri_plugin_prevent_default::{Flags, PlatformOptions};
 
 mod commands;
 mod entities;
@@ -23,6 +24,23 @@ pub fn run() {
     #[cfg(desktop)]
     {
         builder = builder.plugin(tauri_plugin_single_instance::init(|_app, _args, _cwd| {}));
+    }
+
+    if !tauri::is_dev() {
+        builder = builder.plugin(
+            tauri_plugin_prevent_default::Builder::new()
+                .with_flags(Flags::all())
+                .platform(
+                    PlatformOptions::new()
+                        .dev_tools(false)
+                        .general_autofill(false)
+                        .password_autosave(false)
+                        .default_context_menus(false)
+                        .browser_accelerator_keys(false)
+                        .default_script_dialogs(false),
+                )
+                .build(),
+        );
     }
 
     builder
