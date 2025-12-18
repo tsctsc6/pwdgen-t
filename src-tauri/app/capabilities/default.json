@@ -9,6 +9,5 @@
     "core:default",
     "dialog:default",
     "fs:default"
-  ],
-  "capabilities": []
+  ]
 }
