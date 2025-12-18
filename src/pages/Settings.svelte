@@ -1,12 +1,13 @@
 ﻿<script lang="ts">
     import {Label, Button} from "flowbite-svelte";
+    import {invoke} from "@tauri-apps/api/core";
 
-    const onBackup = () => {
-
+    const onBackup = async () => {
+        await invoke("backup");
     }
 
-    const onRestore = () => {
-
+    const onRestore = async () => {
+        await invoke("restore");
     }
 </script>
 
