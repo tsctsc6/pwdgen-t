@@ -19,7 +19,6 @@
     } from "flowbite-svelte-icons";
     import ReadAcctData from "./pages/ReadAcctData.svelte";
     import EditAcctData from "./pages/EditAcctData.svelte";
-    import ToastHostView from "./toast/ToastHostView.svelte";
 
     const routes = {
         "/init": Init,
@@ -34,8 +33,6 @@
 
     setContext<IMemoryRouter>(MEMORY_ROUTER, router);
 </script>
-
-<ToastHostView/>
 
 <MemoryRouter {routes} {router} initial="/init"/>
 
