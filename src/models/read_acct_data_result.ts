@@ -3,7 +3,7 @@
     readonly user_name: string
     readonly platform: string
     readonly remark: string
-    readonly skip_count: number
+    readonly nonce_offset: number
     readonly use_up_letter: boolean
     readonly use_low_letter: boolean
     readonly use_number: boolean

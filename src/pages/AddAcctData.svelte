@@ -11,7 +11,7 @@
     let userName: string = $state("");
     let platform: string = $state("");
     let remark: string = $state("");
-    let skipCount: number = $state(0);
+    let nonceOffset: number = $state(0);
     let useUpLetter: boolean = $state(true);
     let useLowLetter: boolean = $state(true);
     let useNumber: boolean = $state(true);
@@ -25,7 +25,7 @@
             user_name: userName,
             platform: platform,
             remark: remark,
-            skip_count: skipCount,
+            nonce_offset: nonceOffset,
             use_up_letter: useUpLetter,
             use_low_letter: useLowLetter,
             use_number: useNumber,
@@ -40,7 +40,7 @@
         let request = {
             user_name: userName,
             platform: platform,
-            skip_count: skipCount,
+            nonce_offset: nonceOffset,
             use_up_letter: useUpLetter,
             use_low_letter: useLowLetter,
             use_number: useNumber,
@@ -75,15 +75,15 @@
     <Input id="remark" placeholder="Remark" bind:value={remark}/>
 </div>
 <div class="flex items-center mb-6 gap-2">
-    <Label for="skip-count" class="mb-2 block">Skip count</Label>
+    <Label for="nonce-offset" class="mb-2 block">Nonce offset</Label>
     <div class="relative flex max-w-56 items-center">
         <ButtonGroup>
-            <Button type="button" id="decrement-button" onclick={() => (skipCount -= 1)}>
+            <Button type="button" id="decrement-button" onclick={() => (nonceOffset -= 1)}>
                 <MinusOutline/>
             </Button>
-            <Input bind:value={skipCount} type="number" id="skip-count-input"
+            <Input bind:value={nonceOffset} type="number" id="nonce-offset-input"
                    aria-describedby="helper-text-explanation" placeholder="999" required class="w-32! text-center"/>
-            <Button type="button" id="increment-button" onclick={() => (skipCount += 1)}>
+            <Button type="button" id="increment-button" onclick={() => (nonceOffset += 1)}>
                 <PlusOutline/>
             </Button>
         </ButtonGroup>

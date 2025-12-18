@@ -9,7 +9,7 @@ pub struct Model {
     pub user_name: String,
     pub platform: String,
     pub remark: String,
-    pub skip_count: u32,
+    pub nonce_offset: u32,
     pub use_up_letter: bool,
     pub use_low_letter: bool,
     pub use_number: bool,

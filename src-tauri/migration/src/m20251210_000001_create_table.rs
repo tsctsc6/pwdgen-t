@@ -15,7 +15,7 @@ impl MigrationTrait for Migration {
                     .col(string("UserName"))
                     .col(string("Platform"))
                     .col(string("Remark"))
-                    .col(integer("SkipCount"))
+                    .col(integer("NonceOffset"))
                     .col(boolean("UseUpLetter"))
                     .col(boolean("UseLowLetter"))
                     .col(boolean("UseNumber"))

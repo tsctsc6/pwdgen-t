@@ -11,7 +11,7 @@ pub struct Request {
     pub user_name: String,
     pub platform: String,
     pub remark: String,
-    pub skip_count: u32,
+    pub nonce_offset: u32,
     pub use_up_letter: bool,
     pub use_low_letter: bool,
     pub use_number: bool,
@@ -60,7 +60,7 @@ pub async fn update_acct_data(app: tauri::AppHandle, request: Request) -> Result
     acct_data_to_update.user_name = Set((&request).user_name.clone());
     acct_data_to_update.platform = Set((&request).platform.clone());
     acct_data_to_update.remark = Set((&request).remark.clone());
-    acct_data_to_update.skip_count = Set((&request).skip_count.clone());
+    acct_data_to_update.nonce_offset = Set((&request).nonce_offset.clone());
     acct_data_to_update.use_up_letter = Set((&request).use_up_letter.clone());
     acct_data_to_update.use_low_letter = Set((&request).use_low_letter.clone());
     acct_data_to_update.use_number = Set((&request).use_number.clone());

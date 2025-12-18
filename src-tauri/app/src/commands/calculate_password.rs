@@ -23,7 +23,7 @@ static SP_CHAR: [char; 15] = [
 pub struct Request {
     pub user_name: String,
     pub platform: String,
-    pub skip_count: u32,
+    pub nonce_offset: u32,
     pub use_up_letter: bool,
     pub use_low_letter: bool,
     pub use_number: bool,
@@ -35,28 +35,35 @@ pub struct Request {
 pub fn validate(request: &Request) -> Result<(), CommandError> {
     if request.user_name.is_empty() {
         Err(UniversalError {
-            code: 0,
+            code: 2,
             message: "user_name is empty".to_string(),
         })?;
     }
 
     if request.platform.is_empty() {
         Err(UniversalError {
-            code: 0,
+            code: 2,
             message: "platform is empty".to_string(),
+        })?;
+    }
+
+    if request.nonce_offset >= 20 {
+        Err(UniversalError {
+            code: 2,
+            message: "nonce_offset is too big".to_string(),
         })?;
     }
 
     if request.pwd_len > 255 {
         Err(UniversalError {
-            code: 0,
+            code: 2,
             message: "pwd_len is too long".to_string(),
         })?;
     }
 
     if request.main_password.is_empty() {
         Err(UniversalError {
-            code: 0,
+            code: 2,
             message: "main_password is empty".to_string(),
         })?;
     }
@@ -88,21 +95,18 @@ pub async fn calculate_password(
     .to_vec();
     let hash: Vec<_> = hash1.iter().zip(hash2.iter()).map(|(x, y)| x ^ y).collect();
 
+    let nonce_offset = request.nonce_offset as usize;
     // key is hash, nonce is hash first 96 bits.
-    let mut keystream_provoder = KeystreamProvider::new(Box::new(ChaCha20::new(
+    let mut keystream_provider = KeystreamProvider::new(Box::new(ChaCha20::new(
         GenericArray::from_slice(&hash),
-        GenericArray::from_slice(&hash[0..12]),
+        GenericArray::from_slice(&hash[nonce_offset..nonce_offset + 12]),
     )));
 
     let mut string_builder: Vec<char> = vec![];
 
-    for _ in 0..request.skip_count {
-        let _ = keystream_provoder.get_next_key()?;
-    }
-
     for _ in 0..request.pwd_len {
         let char_set = loop {
-            let key = keystream_provoder.get_next_key()?;
+            let key = keystream_provider.get_next_key()?;
             let char_set: &[char] = match key % 4 {
                 0 => {
                     if request.use_up_letter {
@@ -139,7 +143,7 @@ pub async fn calculate_password(
             }
         };
         let char = loop {
-            let key = keystream_provoder.get_next_key()?;
+            let key = keystream_provider.get_next_key()?;
             break match uniformly_pick(char_set, key as usize) {
                 None => continue,
                 Some(char) => char,

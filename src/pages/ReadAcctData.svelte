@@ -39,7 +39,7 @@
         let request = {
             user_name: acctData.user_name,
             platform: acctData.platform,
-            skip_count: acctData.skip_count,
+            nonce_offset: acctData.nonce_offset,
             use_up_letter: acctData.use_up_letter,
             use_low_letter: acctData.use_low_letter,
             use_number: acctData.use_number,
@@ -85,13 +85,13 @@
         <Input readonly id="remark" bind:value={acctData.remark}/>
     </div>
     <div class="flex items-center mb-6 gap-2">
-        <Label for="skip-count" class="mb-2 block">Skip count</Label>
+        <Label for="nonce-offset" class="mb-2 block">Nonce offset</Label>
         <div class="relative flex max-w-56 items-center">
             <ButtonGroup>
                 <Button disabled type="button" id="decrement-button">
                     <MinusOutline/>
                 </Button>
-                <Input readonly bind:value={acctData.skip_count} type="number" id="skip-count-input"
+                <Input readonly bind:value={acctData.nonce_offset} type="number" id="nonce-offset-input"
                        aria-describedby="helper-text-explanation" placeholder="999" required class="w-32! text-center"/>
                 <Button disabled type="button" id="increment-button">
                     <PlusOutline/>
