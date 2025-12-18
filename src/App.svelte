@@ -3,8 +3,7 @@
     import {setContext, type Component} from "svelte";
     import {createMemoryRouter} from "./route/memory-router";
     import {
-        type IMemoryRouter,
-        SingletonKey,
+        type IMemoryRouter, MEMORY_ROUTER,
     } from "./route/types";
     import Init from "./pages/Init.svelte";
     import Home from "./pages/Home.svelte";
@@ -20,6 +19,7 @@
     } from "flowbite-svelte-icons";
     import ReadAcctData from "./pages/ReadAcctData.svelte";
     import EditAcctData from "./pages/EditAcctData.svelte";
+    import ToastHostView from "./toast/ToastHostView.svelte";
 
     const routes = {
         "/init": Init,
@@ -32,8 +32,10 @@
 
     const router = createMemoryRouter();
 
-    setContext<IMemoryRouter>(SingletonKey, router);
+    setContext<IMemoryRouter>(MEMORY_ROUTER, router);
 </script>
+
+<ToastHostView/>
 
 <MemoryRouter {routes} {router} initial="/init"/>
 

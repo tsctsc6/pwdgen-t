@@ -12,4 +12,4 @@ export interface IMemoryRouter {
     clear: (path: string) => void;
 }
 
-export const SingletonKey = "MEMORY_ROUTER";
+export const MEMORY_ROUTER = "MEMORY_ROUTER";

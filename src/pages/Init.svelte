@@ -2,9 +2,9 @@
     import {invoke} from "@tauri-apps/api/core";
     import {getContext, onMount} from "svelte";
     import {Spinner} from "flowbite-svelte";
-    import {type IMemoryRouter, SingletonKey} from "../route/types";
+    import {type IMemoryRouter, MEMORY_ROUTER} from "../route/types";
 
-    const router = getContext<IMemoryRouter>(SingletonKey);
+    const router = getContext<IMemoryRouter>(MEMORY_ROUTER);
 
     onMount(async () => {
         try {
