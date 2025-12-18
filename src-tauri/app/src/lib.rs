@@ -1,9 +1,11 @@
+use crate::commands::backup::backup;
 use crate::commands::calculate_password::calculate_password;
 use crate::commands::create_acct_data::create_acct_data;
 use crate::commands::delete_acct_data::delete_acct_data;
 use crate::commands::init_migrate::init_migrate;
 use crate::commands::read_acct_data::read_acct_data;
 use crate::commands::read_all_acct_data::read_all_acct_data;
+use crate::commands::restore::restore;
 use crate::commands::update_acct_data::update_acct_data;
 
 mod commands;
@@ -14,7 +16,7 @@ mod keystream_provider;
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     #[allow(unused_mut)]
-    let mut builder = tauri::Builder::default();
+    let mut builder = tauri::Builder::default().plugin(tauri_plugin_dialog::init());
 
     #[cfg(desktop)]
     {
@@ -39,7 +41,9 @@ pub fn run() {
             delete_acct_data,
             read_acct_data,
             read_all_acct_data,
-            calculate_password
+            calculate_password,
+            backup,
+            restore,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

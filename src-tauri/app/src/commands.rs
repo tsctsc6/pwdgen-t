@@ -1,13 +1,15 @@
 ﻿use serde::Serialize;
 use thiserror::Error;
 
+pub mod backup;
+pub mod calculate_password;
 pub mod create_acct_data;
 pub mod delete_acct_data;
 pub mod init_migrate;
 pub mod read_acct_data;
 pub mod read_all_acct_data;
+pub mod restore;
 pub mod update_acct_data;
-pub(crate) mod calculate_password;
 
 #[derive(Debug, Error)]
 pub enum CommandError {
