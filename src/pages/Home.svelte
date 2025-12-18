@@ -16,6 +16,7 @@
     import {getContext, onMount} from "svelte";
     import type {page_content_type, read_all_acct_data_result} from "../models/read_all_acct_data_result";
     import {type IMemoryRouter, MEMORY_ROUTER} from "../route/types";
+    import {message} from "@tauri-apps/plugin-dialog";
 
     const router = getContext<IMemoryRouter>(MEMORY_ROUTER);
 
@@ -37,7 +38,20 @@
     const getData = async () => {
         pageContent = null;
         let pageIndex = currentPage - 1;
-        let result: read_all_acct_data_result = await invoke("read_all_acct_data", {searchTerm, pageIndex, pageSize});
+        let result: read_all_acct_data_result = {page_count: 0, page_content: []}
+        try {
+            result = await invoke("read_all_acct_data", {
+                searchTerm,
+                pageIndex,
+                pageSize
+            });
+        } catch (err) {
+            if (typeof err === 'string') {
+                await message(err, {title: 'Error', kind: 'error'});
+            } else if (err instanceof Error) {
+                await message(err.message, {title: 'Error', kind: 'error'});
+            }
+        }
         if (result.page_count === 0) {
             totalPages = 1;
         } else {

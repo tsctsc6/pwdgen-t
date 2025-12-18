@@ -1,13 +1,30 @@
 ﻿<script lang="ts">
     import {Label, Button} from "flowbite-svelte";
     import {invoke} from "@tauri-apps/api/core";
+    import {message} from "@tauri-apps/plugin-dialog";
 
     const onBackup = async () => {
-        await invoke("backup");
+        try {
+            await invoke("backup");
+        } catch (err) {
+            if (typeof err === 'string') {
+                await message(err, {title: 'Error', kind: 'error'});
+            } else if (err instanceof Error) {
+                await message(err.message, {title: 'Error', kind: 'error'});
+            }
+        }
     }
 
     const onRestore = async () => {
-        await invoke("restore");
+        try {
+            await invoke("restore");
+        } catch (err) {
+            if (typeof err === 'string') {
+                await message(err, {title: 'Error', kind: 'error'});
+            } else if (err instanceof Error) {
+                await message(err.message, {title: 'Error', kind: 'error'});
+            }
+        }
     }
 </script>
 

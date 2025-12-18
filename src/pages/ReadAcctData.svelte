@@ -6,6 +6,7 @@
     import {getContext, onMount} from "svelte";
     import {type IMemoryRouter, MEMORY_ROUTER} from "../route/types";
     import type {read_acct_data_result} from "../models/read_acct_data_result";
+    import {message} from "@tauri-apps/plugin-dialog";
 
     const router = getContext<IMemoryRouter>(MEMORY_ROUTER);
 
@@ -17,8 +18,15 @@
     let passwordGenerated: string = $state("");
 
     onMount(async () => {
-        console.log(id);
-        acctData = await invoke("read_acct_data", {id});
+        try {
+            acctData = await invoke("read_acct_data", {id});
+        } catch (err) {
+            if (typeof err === 'string') {
+                await message(err, {title: 'Error', kind: 'error'});
+            } else if (err instanceof Error) {
+                await message(err.message, {title: 'Error', kind: 'error'});
+            }
+        }
     });
 
     const onBack = () => {
@@ -47,7 +55,15 @@
             pwd_len: acctData.pwd_len,
             main_password: mainPassword,
         };
-        passwordGenerated = await invoke("calculate_password", {request});
+        try {
+            passwordGenerated = await invoke("calculate_password", {request});
+        } catch (err) {
+            if (typeof err === 'string') {
+                await message(err, {title: 'Error', kind: 'error'});
+            } else if (err instanceof Error) {
+                await message(err.message, {title: 'Error', kind: 'error'});
+            }
+        }
     }
 </script>
 

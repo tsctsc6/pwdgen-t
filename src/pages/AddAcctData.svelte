@@ -5,6 +5,7 @@
     import {invoke} from "@tauri-apps/api/core";
     import {getContext} from "svelte";
     import {type IMemoryRouter, MEMORY_ROUTER} from "../route/types";
+    import {message} from "@tauri-apps/plugin-dialog";
 
     const router = getContext<IMemoryRouter>(MEMORY_ROUTER);
 
@@ -32,8 +33,16 @@
             use_sp_char: useSpecialCharacter,
             pwd_len: passwordLength,
         };
-        await invoke("create_acct_data", {request});
-        router.clear("/home");
+        try {
+            await invoke("create_acct_data", {request});
+            router.clear("/home");
+        } catch (err) {
+            if (typeof err === 'string') {
+                await message(err, {title: 'Error', kind: 'error'});
+            } else if (err instanceof Error) {
+                await message(err.message, {title: 'Error', kind: 'error'});
+            }
+        }
     }
 
     const onGenerate = async () => {
@@ -48,7 +57,15 @@
             pwd_len: passwordLength,
             main_password: mainPassword,
         };
-        passwordGenerated = await invoke("calculate_password", {request});
+        try {
+            passwordGenerated = await invoke("calculate_password", {request});
+        } catch (err) {
+            if (typeof err === 'string') {
+                await message(err, {title: 'Error', kind: 'error'});
+            } else if (err instanceof Error) {
+                await message(err.message, {title: 'Error', kind: 'error'});
+            }
+        }
     }
 </script>
 
