@@ -34,3 +34,4 @@ cipher = "0"
 tauri-plugin-dialog = "2"
 tauri-plugin-fs = "2"
 tauri-plugin-prevent-default = { version = "4", features = ["platform-windows"] }
+tauri-plugin-android-fs = "=24.0.0"
