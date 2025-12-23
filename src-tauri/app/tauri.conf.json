@@ -33,12 +33,15 @@
       "icons/icon.ico"
     ],
     "targets": [
-      "msi"
+      "msi", "deb"
     ],
     "windows": {
       "wix": {
         "upgradeCode": "62a10e01-2846-4662-a0bd-8e5583448aa0"
       }
+    },
+    "linux": {
+      "deb":{}
     }
   }
 }
