@@ -21,6 +21,8 @@ pub enum CommandError {
     StdIOError(#[from] std::io::Error),
     #[error("Database error: {0}")]
     DbError(#[from] migration::DbErr),
+    #[error("Android fs error: {0}")]
+    AndroidFsError(#[from] tauri_plugin_android_fs::Error),
 }
 
 #[derive(Debug, Error, Serialize)]
