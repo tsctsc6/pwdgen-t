@@ -1,7 +1,14 @@
 use sea_orm_migration::{prelude::*, schema::*};
 
-#[derive(DeriveMigrationName)]
+// #[derive(DeriveMigrationName)]
 pub struct Migration;
+
+// Manually specify the migration name, because it is different in desktop and android.
+impl MigrationName for Migration {
+    fn name(&self) -> &str {
+        "m20251210_000001_create_table"
+    }
+}
 
 #[async_trait::async_trait]
 impl MigrationTrait for Migration {
