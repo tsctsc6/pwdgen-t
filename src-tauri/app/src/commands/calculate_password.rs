@@ -77,23 +77,15 @@ pub async fn calculate_password(
     request: Request,
 ) -> Result<String, CommandError> {
     validate(&request)?;
-    let hash1 = Sha256::digest(
+    let hash = Sha256::digest(
         [
             request.user_name.as_bytes(),
-            request.main_password.as_bytes(),
-        ]
-        .concat(),
-    )
-    .to_vec();
-    let hash2 = Sha256::digest(
-        [
-            request.main_password.as_bytes(),
             request.platform.as_bytes(),
+            request.main_password.as_bytes(),
         ]
         .concat(),
     )
     .to_vec();
-    let hash: Vec<_> = hash1.iter().zip(hash2.iter()).map(|(x, y)| x ^ y).collect();
 
     let nonce_offset = request.nonce_offset as usize;
     // key is hash, nonce is hash first 96 bits.
