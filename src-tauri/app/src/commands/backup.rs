@@ -6,18 +6,17 @@ use tokio::fs;
 pub async fn backup(app: tauri::AppHandle) -> Result<(), CommandError> {
     #[cfg(desktop)]
     {
-        backup_desktop(&app).await
+        return backup_desktop(&app).await;
     }
     #[cfg(target_os = "android")]
     {
-        backup_android(&app).await
+        return backup_android(&app).await;
     }
 }
 
 #[cfg(desktop)]
 async fn backup_desktop(app: &tauri::AppHandle) -> Result<(), CommandError> {
     use crate::commands::UniversalError;
-    use crate::factory::get_db_file_path;
     use alloc::string::ToString;
     use tauri_plugin_dialog::DialogExt;
 

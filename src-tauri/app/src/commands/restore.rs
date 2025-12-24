@@ -6,18 +6,17 @@ use tokio::fs;
 pub async fn restore(app: tauri::AppHandle) -> Result<(), CommandError> {
     #[cfg(desktop)]
     {
-        restore_desktop(&app).await
+        return restore_desktop(&app).await;
     }
     #[cfg(target_os = "android")]
     {
-        restore_android(&app).await
+        return restore_android(&app).await;
     }
 }
 
 #[cfg(desktop)]
 async fn restore_desktop(app: &tauri::AppHandle) -> Result<(), CommandError> {
     use crate::commands::UniversalError;
-    use crate::factory::get_db_file_path;
     use tauri_plugin_dialog::DialogExt;
 
     let input_file_path = app
