@@ -1,4 +1,4 @@
-package tsctsc6.pwdgen_t
+package tsctsc6.pwdgent
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

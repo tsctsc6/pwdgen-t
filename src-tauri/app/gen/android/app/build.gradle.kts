@@ -16,10 +16,10 @@ val tauriProperties = Properties().apply {
 
 android {
     compileSdk = 36
-    namespace = "tsctsc6.pwdgen_t"
+    namespace = "tsctsc6.pwdgent"
     defaultConfig {
         manifestPlaceholders["usesCleartextTraffic"] = "false"
-        applicationId = "tsctsc6.pwdgen_t"
+        applicationId = "tsctsc6.pwdgent"
         minSdk = 24
         targetSdk = 36
         versionCode = tauriProperties.getProperty("tauri.android.versionCode", "1").toInt()
@@ -27,10 +27,10 @@ android {
     }
     signingConfigs {
         create("release") {
-            val keystorePropertiesFile = rootProject.file("key.properties")
+            val keyPropertiesFile = rootProject.file("key.properties")
             val keystoreProperties = Properties()
-            if (keystorePropertiesFile.exists()) {
-                keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+            if (keyPropertiesFile.exists()) {
+                keystoreProperties.load(FileInputStream(keyPropertiesFile))
             }
 
             keyAlias = keystoreProperties["keyAlias"] as String
@@ -62,8 +62,12 @@ android {
             )
         }
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "21"
     }
     buildFeatures {
         buildConfig = true
