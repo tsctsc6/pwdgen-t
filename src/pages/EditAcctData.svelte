@@ -9,7 +9,7 @@
     import {getContext, onMount} from "svelte";
     import {type IMemoryRouter, MEMORY_ROUTER} from "../route/types";
     import type {read_acct_data_result} from "../models/read_acct_data_result";
-    import {message} from "@tauri-apps/plugin-dialog";
+    import {ask, message} from "@tauri-apps/plugin-dialog";
 
     const router = getContext<IMemoryRouter>(MEMORY_ROUTER);
 
@@ -111,6 +111,10 @@
 
     const onDelete = async () => {
         try {
+            const answer = await ask("Are you sure you want to delete this acct?", {title: "Delete", kind: "warning"});
+            if (!answer) {
+                return;
+            }
             await invoke("delete_acct_data", {id});
             router.clear("/home");
         } catch (err) {
