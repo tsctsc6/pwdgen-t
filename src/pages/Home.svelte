@@ -74,7 +74,11 @@
 </div>
 
 <div class="mb-6">
-    <Search id="search-input" bind:value={searchTerm}>
+    <Search id="search-input" bind:value={searchTerm} onkeydown={(e) => {
+            if (e.key === 'Enter') {
+              onSearch();
+            }
+        }}>
         <Button id="search-button" class="me-1" onclick={onSearch}>
             <SearchSolid class="h-6 w-6"/>
         </Button>

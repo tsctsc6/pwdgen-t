@@ -150,7 +150,11 @@
     <div class="flex items-center mb-6 gap-2"></div>
 
     <div class="flex items-center mb-6 gap-2">
-        <Input id="default-input" type="password" bind:value={mainPassword}/>
+        <Input id="default-input" type="password" bind:value={mainPassword} onkeydown={(e) => {
+            if (e.key === 'Enter') {
+              onGenerate();
+            }
+        }}/>
         <Button id="generate" pill class="p-2!" onclick={onGenerate}>
             <PlaySolid class="h-6 w-6"/>
         </Button>
