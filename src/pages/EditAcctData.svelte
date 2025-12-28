@@ -2,7 +2,7 @@
     import {Button, Label, Input, Toggle, ButtonGroup, Clipboard, Tooltip, Spinner} from "flowbite-svelte";
     import {
         MinusOutline, PlusOutline, CheckOutline, ClipboardCleanSolid, PlaySolid, FloppyDiskAltSolid,
-        CaretLeftSolid, TrashBinSolid
+        CaretLeftSolid, TrashBinSolid, EyeSlashOutline, EyeOutline
     }
         from "flowbite-svelte-icons";
     import {invoke} from "@tauri-apps/api/core";
@@ -28,6 +28,8 @@
     let passwordLength: number = $state(15);
     let mainPassword: string = $state("");
     let passwordGenerated: string = $state("");
+
+    let showMainPassword: boolean = $state(false);
 
     onMount(async () => {
         try {
@@ -214,11 +216,31 @@
     </div>
 
     <div class="flex items-center mb-6 gap-2">
-        <Input id="default-input" type="password" bind:value={mainPassword} onkeydown={(e) => {
+        <Input id="main-password" class="pr-14" type={showMainPassword ? 'text' : 'password'} bind:value={mainPassword}
+               onkeydown={(e) => {
             if (e.key === 'Enter') {
               onGenerate();
             }
-        }}/>
+        }}>
+            {#snippet right()}
+                <Button
+                        class="w-5 h-5 bg-transparent hover:bg-transparent border-none
+                        focus:bg-transparent active:bg-transparent
+                        text-gray-500 dark:text-gray-400"
+                        onmousedown={() => (showMainPassword = true)}
+                        onmouseup={() => (showMainPassword = false)}
+                        onmouseleave={() => (showMainPassword = false)}
+                        ontouchstart={() => (showMainPassword = true)}
+                        ontouchend={() => (showMainPassword = false)}
+                >
+                    {#if showMainPassword}
+                        <EyeSlashOutline/>
+                    {:else}
+                        <EyeOutline/>
+                    {/if}
+                </Button>
+            {/snippet}
+        </Input>
         <Button id="generate" pill class="p-2!" onclick={onGenerate}>
             <PlaySolid class="h-6 w-6"/>
         </Button>
